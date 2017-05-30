@@ -20,7 +20,9 @@ GROUP BY    city
 SELECT      
             line_item_id
         ,   name                            as line_item_name
+        ,   placement_id
         ,   count( distinct advertiser )    as cntdistinct_advertiser
+        ,   count( distinct placement_id )  as cntdistinct_placement_id
         ,   count( distinct size )          as cntdistinct_size
         ,   count( distinct placement_id )  as cntdistinct_placement_id -- I put a comment on it
         ,   count( distinct country )       as cntdistinct_country
@@ -29,9 +31,23 @@ SELECT
         ,   count( distinct device_type )   as cntdistinct_device_type
         
 FROM        bidopt.tbl_dbm_line_items_v2
+WHERE       line_item_id in 
+            (
+                SELECT line_item_id
+                FROM
+                (
+                    SELECT      line_item_id
+                            ,   count( distinct placement_id ) as cntdistinct_placement_id
+                    FROM        bidopt.tbl_dbm_line_items_v2
+                    GROUP BY    line_item_id
+                    HAVING      count( distinct placement_id ) > 1
+                )
+            )
 GROUP BY    
             line_item_id
-        ,   name;
+        ,   name
+        ,   placement_id
+;
 -- Sure one line_item_id has one name, one advertiser, and one size.
 -- But one line_item_id can appear on many country, city, region, device type
 -- 
