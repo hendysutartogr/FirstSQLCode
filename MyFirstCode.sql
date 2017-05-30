@@ -22,7 +22,7 @@ SELECT
         ,   name                            as line_item_name
         ,   count( distinct advertiser )    as cntdistinct_advertiser
         ,   count( distinct size )          as cntdistinct_size
-        ,   count( distinct placement_id )  as cntdistinct_placement_id
+        ,   count( distinct placement_id )  as cntdistinct_placement_id -- I put a comment on it
         ,   count( distinct country )       as cntdistinct_country
         ,   count( distinct city )          as cntdistinct_city
         ,   count( distinct region )        as cntdistinct_region
